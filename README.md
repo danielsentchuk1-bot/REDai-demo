@@ -1,0 +1,769 @@
+[index.html](https://github.com/user-attachments/files/27366815/index.html)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REDai — Find Profitable Projects in Minutes</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #E8442A; --red-dark: #C13520; --red-light: #FF6B52;
+  --black: #0A0A0A; --dark: #111111; --dark2: #1A1A1A; --dark3: #242424; --dark4: #2E2E2E;
+  --gray: #888888; --gray2: #555555; --white: #FFFFFF;
+  --font-display: 'Syne', sans-serif; --font-body: 'Inter', sans-serif;
+}
+body { font-family: var(--font-body); background: var(--black); color: var(--white); min-height: 100vh; overflow-x: hidden; }
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(10,10,10,0.97); backdrop-filter: blur(12px);
+  border-bottom: 1px solid #1E1E1E;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 60px;
+}
+.nav-logo { font-family: var(--font-display); font-size: 20px; color: var(--white); letter-spacing: -0.5px; cursor: pointer; }
+.nav-logo span { color: var(--red); }
+.nav-links { display: flex; gap: 2px; }
+.nav-link { padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 400; cursor: pointer; color: var(--gray); border: none; background: none; font-family: var(--font-body); transition: all 0.15s; }
+.nav-link:hover { color: var(--white); }
+.nav-link.active { color: var(--white); }
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.nav-search-btn { background: none; border: 1px solid #2E2E2E; color: var(--gray); padding: 6px 12px; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: var(--font-body); transition: all 0.15s; }
+.nav-search-btn:hover { border-color: var(--gray); color: var(--white); }
+.nav-cta { background: var(--red); color: var(--white); border: none; padding: 7px 18px; border-radius: 6px; font-family: var(--font-body); font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+.nav-cta:hover { background: var(--red-dark); }
+.page { display: none; padding-top: 60px; min-height: 100vh; }
+.page.active { display: block; }
+
+/* LANDING */
+.hero-section { min-height: calc(100vh - 60px); display: flex; flex-direction: column; justify-content: center; padding: 60px 48px 40px; max-width: 1200px; margin: 0 auto; }
+.hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(232,68,42,0.12); border: 1px solid rgba(232,68,42,0.25); color: var(--red-light); font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 20px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 28px; width: fit-content; }
+.hero-brand { font-family: var(--font-display); font-size: 110px; line-height: 0.9; color: var(--white); letter-spacing: -4px; margin-bottom: 20px; }
+.hero-brand span { color: var(--red); }
+.hero-tagline { font-family: var(--font-display); font-size: 28px; color: var(--gray); font-weight: 700; margin-bottom: 20px; letter-spacing: -0.5px; }
+.hero-sub { font-size: 16px; color: var(--gray); line-height: 1.7; max-width: 480px; margin-bottom: 40px; font-weight: 300; }
+.hero-ctas { display: flex; gap: 12px; margin-bottom: 60px; }
+.cta-primary { background: var(--red); color: var(--white); border: none; padding: 14px 28px; border-radius: 8px; font-family: var(--font-body); font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+.cta-primary:hover { background: var(--red-dark); }
+.cta-ghost { background: transparent; color: var(--gray); border: 1px solid #2E2E2E; padding: 14px 28px; border-radius: 8px; font-family: var(--font-body); font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+.cta-ghost:hover { border-color: var(--gray); color: var(--white); }
+.hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #1E1E1E; border: 1px solid #1E1E1E; border-radius: 12px; overflow: hidden; }
+.stat-item { background: var(--dark2); padding: 24px 28px; }
+.stat-num { font-family: var(--font-display); font-size: 36px; color: var(--white); margin-bottom: 4px; }
+.stat-label { font-size: 13px; color: var(--gray); font-weight: 400; }
+.scroll-arrow { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 8px; cursor: pointer; width: fit-content; }
+.scroll-arrow-label { font-size: 13px; color: var(--gray); font-weight: 400; letter-spacing: 0.02em; }
+.scroll-arrow-icon { font-size: 28px; color: var(--red); line-height: 1; animation: bounce 2s infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+.how-section { max-width: 1200px; margin: 0 auto; padding: 48px 48px 80px; border-top: 1px solid #1E1E1E; }
+.section-eyebrow { font-size: 11px; font-weight: 600; color: var(--red); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
+.section-title { font-family: var(--font-display); font-size: 36px; color: var(--white); margin-bottom: 40px; }
+.steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #1E1E1E; border: 1px solid #1E1E1E; border-radius: 12px; overflow: hidden; }
+.step-item { background: var(--dark2); padding: 32px; }
+.step-num { font-family: var(--font-display); font-size: 48px; color: var(--dark4); margin-bottom: 16px; }
+.step-title { font-size: 16px; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+.step-desc { font-size: 14px; color: var(--gray); line-height: 1.6; }
+.step-tag { display: inline-block; background: rgba(232,68,42,0.12); color: var(--red-light); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 4px; margin-top: 12px; }
+
+/* STATIC PAGES */
+.static-page { max-width: 860px; margin: 0 auto; padding: 60px 48px; }
+.static-title { font-family: var(--font-display); font-size: 48px; color: var(--white); margin-bottom: 16px; }
+.static-sub { font-size: 16px; color: var(--gray); line-height: 1.8; margin-bottom: 32px; }
+.static-block { background: var(--dark2); border: 1px solid #1E1E1E; border-radius: 10px; padding: 24px; margin-bottom: 16px; }
+.static-block h3 { font-size: 16px; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+.static-block p { font-size: 14px; color: var(--gray); line-height: 1.7; }
+.sblk-tag { display: inline-block; background: rgba(232,68,42,0.12); color: var(--red-light); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; }
+
+/* DASHBOARD */
+.dash-layout { display: grid; grid-template-columns: 210px 1fr; min-height: calc(100vh - 60px); }
+.dash-sidebar { background: var(--dark); border-right: 1px solid #1E1E1E; padding: 24px 16px; }
+.sidebar-market { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #1E1E1E; }
+.sidebar-market-label { font-size: 10px; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.sidebar-market-val { font-size: 14px; font-weight: 600; color: var(--white); }
+.sidebar-market-sub { font-size: 12px; color: var(--gray); margin-top: 2px; }
+.sidebar-section { font-size: 10px; font-weight: 600; color: var(--gray2); text-transform: uppercase; letter-spacing: 0.08em; padding: 16px 8px 6px; }
+.sidebar-nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px; font-size: 13px; font-weight: 500; color: var(--gray); cursor: pointer; transition: all 0.15s; margin-bottom: 2px; }
+.sidebar-nav-item:hover { background: var(--dark3); color: var(--white); }
+.sidebar-nav-item.active { background: var(--dark3); color: var(--white); }
+.sidebar-nav-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+.sidebar-badge { margin-left: auto; background: var(--red); color: var(--white); font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 8px; min-width: 18px; text-align: center; }
+.dash-content { background: var(--black); padding: 32px 36px; }
+.dash-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; }
+.dash-title-main { font-family: var(--font-display); font-size: 24px; color: var(--white); margin-bottom: 4px; }
+.dash-title-sub { font-size: 13px; color: var(--gray); }
+.scan-bar { display: flex; gap: 10px; align-items: center; background: var(--dark2); border: 1px solid #2A2A2A; border-radius: 10px; padding: 14px 18px; margin-bottom: 28px; }
+.scan-label { font-size: 12px; color: var(--gray); white-space: nowrap; font-weight: 500; }
+.scan-input { flex: 1; background: var(--dark3); border: 1px solid #333; border-radius: 6px; padding: 8px 12px; font-size: 14px; font-family: var(--font-body); color: var(--white); }
+.scan-input:focus { outline: none; border-color: var(--red); }
+.scan-filter { background: var(--dark3); border: 1px solid #333; border-radius: 6px; padding: 8px 12px; font-size: 13px; font-family: var(--font-body); color: var(--gray); }
+.scan-btn { background: var(--red); color: var(--white); border: none; padding: 9px 22px; border-radius: 6px; font-family: var(--font-body); font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+.scan-btn:hover { background: var(--red-dark); }
+.scan-btn:disabled { opacity: 0.6; cursor: default; }
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 40px; text-align: center; }
+.empty-icon { font-size: 48px; margin-bottom: 24px; opacity: 0.2; }
+.empty-title { font-family: var(--font-display); font-size: 22px; color: var(--gray); margin-bottom: 8px; }
+.empty-sub { font-size: 14px; color: var(--gray2); line-height: 1.6; max-width: 360px; }
+.results-area { display: none; }
+.results-area.visible { display: block; }
+.metrics-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 28px; }
+.metric-box { background: var(--dark2); border: 1px solid #1E1E1E; border-radius: 10px; padding: 18px 20px; }
+.metric-box-label { font-size: 11px; color: var(--gray); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+.metric-box-val { font-size: 26px; font-weight: 700; color: var(--white); }
+.metric-box-sub { font-size: 12px; color: var(--red-light); margin-top: 4px; }
+.copilot-bar { background: var(--dark2); border: 1px solid rgba(232,68,42,0.2); border-radius: 10px; padding: 14px 18px; margin-bottom: 24px; display: flex; gap: 14px; align-items: flex-start; }
+.copilot-icon { width: 28px; height: 28px; border-radius: 50%; background: var(--red); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 12px; font-weight: 800; color: var(--white); margin-top: 2px; }
+.copilot-label { font-size: 10px; font-weight: 700; color: var(--red-light); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.copilot-text { font-size: 13px; color: #CCCCCC; line-height: 1.6; }
+.copilot-text strong { color: var(--white); }
+.table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.table-title { font-size: 14px; font-weight: 600; color: var(--white); }
+.table-meta { font-size: 12px; color: var(--gray); }
+.prop-table { width: 100%; border-collapse: collapse; background: var(--dark2); border-radius: 10px; overflow: hidden; border: 1px solid #1E1E1E; }
+.prop-table thead th { text-align: left; font-size: 11px; font-weight: 600; color: var(--gray); padding: 12px 16px; border-bottom: 1px solid #1E1E1E; text-transform: uppercase; letter-spacing: 0.05em; background: var(--dark); }
+.prop-table tbody tr { border-bottom: 1px solid #1A1A1A; cursor: pointer; transition: background 0.1s; }
+.prop-table tbody tr:hover { background: rgba(232,68,42,0.06); }
+.prop-table tbody tr:last-child { border-bottom: none; }
+.prop-table tbody td { padding: 14px 16px; font-size: 13px; color: var(--white); vertical-align: middle; }
+.rank-num { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+.rank-1 { background: var(--red); color: var(--white); }
+.rank-2 { background: var(--dark4); color: var(--gray); }
+.rank-3 { background: var(--dark3); color: var(--gray2); }
+.rank-other { color: var(--gray2); font-size: 12px; font-weight: 600; padding-left: 8px; }
+.prop-addr { font-weight: 600; font-size: 13px; color: var(--white); }
+.prop-zip { font-size: 11px; color: var(--gray); margin-top: 1px; }
+.roi-val { font-weight: 700; color: var(--red-light); font-size: 14px; }
+.score-wrap { display: flex; align-items: center; gap: 8px; }
+.score-track { width: 60px; height: 3px; background: var(--dark4); border-radius: 2px; }
+.score-fill { height: 3px; border-radius: 2px; background: var(--red); }
+.score-val { font-size: 12px; font-weight: 600; color: var(--white); }
+.status-tag { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 4px; }
+.st-vacant { background: rgba(34,197,94,0.12); color: #4ADE80; }
+.st-redevelop { background: rgba(234,179,8,0.12); color: #FACC15; }
+.st-review { background: rgba(232,68,42,0.12); color: var(--red-light); }
+.save-btn { background: none; border: 1px solid #2E2E2E; color: var(--gray); padding: 4px 10px; border-radius: 5px; font-size: 11px; font-weight: 600; cursor: pointer; font-family: var(--font-body); transition: all 0.15s; white-space: nowrap; }
+.save-btn:hover { border-color: var(--red); color: var(--red-light); }
+.save-btn.saved { background: rgba(232,68,42,0.12); border-color: var(--red); color: var(--red-light); }
+.saved-empty { text-align: center; padding: 80px 40px; }
+.saved-empty-title { font-family: var(--font-display); font-size: 20px; color: var(--gray); margin-bottom: 8px; }
+.saved-empty-sub { font-size: 14px; color: var(--gray2); }
+.saved-card { background: var(--dark2); border: 1px solid #1E1E1E; border-radius: 10px; padding: 18px 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+.saved-card-info { flex: 1; cursor: pointer; }
+.saved-card-addr { font-weight: 600; font-size: 14px; color: var(--white); margin-bottom: 4px; }
+.saved-card-meta { font-size: 12px; color: var(--gray); }
+.saved-card-roi { font-family: var(--font-display); font-size: 22px; color: var(--red-light); margin: 0 16px; }
+.saved-card-remove { background: none; border: none; color: var(--gray2); font-size: 20px; cursor: pointer; padding: 4px 8px; transition: color 0.15s; }
+.saved-card-remove:hover { color: var(--red); }
+
+/* DETAIL */
+.detail-content { max-width: 1200px; margin: 0 auto; padding: 36px 48px; }
+.back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--gray); cursor: pointer; background: none; border: none; font-family: var(--font-body); margin-bottom: 28px; transition: color 0.15s; }
+.back-link:hover { color: var(--white); }
+.detail-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+.detail-addr { font-family: var(--font-display); font-size: 32px; color: var(--white); margin-bottom: 8px; }
+.detail-meta-row { display: flex; gap: 20px; font-size: 13px; color: var(--gray); flex-wrap: wrap; }
+.detail-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.act-btn { padding: 10px 20px; border-radius: 8px; font-family: var(--font-body); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.act-primary { background: var(--red); color: var(--white); border: none; }
+.act-primary:hover { background: var(--red-dark); }
+.act-outline { background: transparent; color: var(--gray); border: 1px solid #2E2E2E; }
+.act-outline:hover { border-color: var(--gray); color: var(--white); }
+.act-save { background: transparent; color: var(--red-light); border: 1px solid rgba(232,68,42,0.3); }
+.act-save:hover { background: rgba(232,68,42,0.1); }
+.detail-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+.det-card { background: var(--dark2); border: 1px solid #1E1E1E; border-radius: 10px; padding: 24px; margin-bottom: 16px; }
+.det-card-title { font-size: 11px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 20px; }
+.pf-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid #1A1A1A; font-size: 13px; }
+.pf-row:last-child { border-bottom: none; }
+.pf-label { color: var(--gray); }
+.pf-val { font-weight: 600; color: var(--white); }
+.pf-val.pos { color: #4ADE80; }
+.pf-val.neg { color: var(--red-light); }
+.pf-section { font-size: 10px; font-weight: 700; color: var(--gray2); text-transform: uppercase; letter-spacing: 0.08em; padding: 12px 0 3px; }
+.pf-total { display: flex; justify-content: space-between; align-items: center; padding: 14px 0 0; border-top: 1px solid #2E2E2E; margin-top: 4px; }
+.pf-total-label { font-size: 15px; font-weight: 600; color: var(--white); }
+.pf-total-val { font-family: var(--font-display); font-size: 22px; color: #4ADE80; }
+.ai-insight-box { background: rgba(232,68,42,0.08); border: 1px solid rgba(232,68,42,0.2); border-radius: 8px; padding: 14px 16px; margin-top: 16px; }
+.ai-insight-lbl { font-size: 10px; font-weight: 700; color: var(--red-light); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+.ai-insight-txt { font-size: 13px; color: #CCCCCC; line-height: 1.6; }
+.zone-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.zone-item .zk { font-size: 11px; color: var(--gray); margin-bottom: 3px; }
+.zone-item .zv { font-size: 14px; font-weight: 600; color: var(--white); }
+.comp-tbl { width: 100%; border-collapse: collapse; }
+.comp-tbl th { font-size: 11px; color: var(--gray); text-align: left; padding: 6px 0; font-weight: 600; border-bottom: 1px solid #1E1E1E; text-transform: uppercase; letter-spacing: 0.05em; }
+.comp-tbl td { font-size: 13px; padding: 9px 0; border-bottom: 1px solid #1A1A1A; color: var(--white); }
+.comp-tbl tr:last-child td { border-bottom: none; }
+.roi-card { background: var(--red); border-radius: 10px; padding: 24px; margin-bottom: 16px; text-align: center; }
+.roi-card-label { font-size: 11px; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.roi-card-num { font-family: var(--font-display); font-size: 56px; color: var(--white); line-height: 1; margin-bottom: 4px; }
+.roi-card-sub { font-size: 12px; color: rgba(255,255,255,0.65); }
+.score-det-card { background: var(--dark2); border: 1px solid #1E1E1E; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+.sdr { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #1A1A1A; }
+.sdr:last-child { border-bottom: none; }
+.sdr-cat { font-size: 13px; color: var(--gray); }
+.pill { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 10px; }
+.pill-high { background: rgba(34,197,94,0.12); color: #4ADE80; }
+.pill-med { background: rgba(234,179,8,0.12); color: #FACC15; }
+.prop-det-card { background: var(--dark2); border: 1px solid #1E1E1E; border-radius: 10px; padding: 20px; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeIn 0.3s ease forwards; }
+
+/* PROPERTY PHOTO / MAP */
+.prop-visual { border-radius: 10px; overflow: hidden; margin-bottom: 16px; border: 1px solid #1E1E1E; background: var(--dark2); }
+.prop-map-frame { width: 100%; height: 260px; border: none; display: block; }
+.prop-photo-placeholder { width: 100%; height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--dark3); gap: 8px; }
+.prop-photo-placeholder span { font-size: 32px; opacity: 0.3; }
+.prop-photo-placeholder p { font-size: 12px; color: var(--gray2); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('landing'); setActiveLink('home')">RED<span>ai</span></div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('landing'); setActiveLink(this)">Home</button>
+    <button class="nav-link" onclick="showPage('about'); setActiveLink(this)">About Us</button>
+    <button class="nav-link" onclick="showPage('services'); setActiveLink(this)">Services</button>
+    <button class="nav-link" onclick="showDash('opportunities'); setActiveLink(this)">Dashboard</button>
+    <button class="nav-link" onclick="showPage('faq'); setActiveLink(this)">FAQ</button>
+    <button class="nav-link" onclick="showPage('help'); setActiveLink(this)">Help</button>
+  </div>
+  <div class="nav-right">
+    <button class="nav-search-btn" onclick="showDash('opportunities'); setTimeout(()=>document.getElementById('scan-input').focus(),100)">Search</button>
+    <button class="nav-cta" onclick="showDash('opportunities'); setActiveLink('dashboard')">Launch Dashboard</button>
+  </div>
+</nav>
+
+<!-- LANDING -->
+<div id="page-landing" class="page active">
+  <div class="hero-section">
+    <div class="hero-tag">AI-Powered Deal Engine · Texas Pilot</div>
+    <div class="hero-brand">RED<span>ai</span></div>
+    <div class="hero-tagline">Helping you find profitable projects in minutes.</div>
+
+    <div class="hero-ctas">
+      <button class="cta-primary" onclick="showDash('opportunities')">Launch Dashboard</button>
+      <button class="cta-ghost" onclick="showPage('services')">See Our Services</button>
+    </div>
+    <div class="scroll-arrow" onclick="document.querySelector('.how-section').scrollIntoView({behavior:'smooth'})">
+      <div class="scroll-arrow-label">See how it works</div>
+      <div class="scroll-arrow-icon">↓</div>
+    </div>
+  </div>
+  <div class="how-section">
+    <div class="section-eyebrow">How it works</div>
+    <div class="section-title">Three steps. Every deal.</div>
+    <div class="steps-grid">
+      <div class="step-item"><div class="step-num">01</div><div class="step-title">Enter a zip code</div><div class="step-desc">REDai scans MLS listings, county records, and parcel databases to surface vacant and redevelopable lots in your target market — in seconds.</div><div class="step-tag">Sourcing</div></div>
+      <div class="step-item"><div class="step-num">02</div><div class="step-title">AI analyzes every parcel</div><div class="step-desc">Our NLP engine reads zoning codes, extracts buildable area, setbacks, and height limits. ML models estimate construction costs and ARV automatically.</div><div class="step-tag">Zoning + Underwriting</div></div>
+      <div class="step-item"><div class="step-num">03</div><div class="step-title">Review ranked opportunities</div><div class="step-desc">Deals ranked by projected ROI. Drill into any property for a full pro forma, zoning summary, comparable sales, and an AI risk assessment.</div><div class="step-tag">Decision Ready</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div id="page-about" class="page">
+  <div class="static-page">
+    <div class="hero-tag">Our Story</div>
+    <div class="static-title">Built for the builders who build America.</div>
+    <p class="static-sub">REDai was founded by a team of real estate and technology professionals who watched small developers lose profitable deals to larger institutions — not because they lacked skill, but because they lacked data.</p>
+    <div class="static-block"><div class="sblk-tag">Mission</div><h3>Level the playing field</h3><p>Small SFR developers — the 120,000+ builders doing 3–20 homes per year — are the backbone of American housing. They deserve the same data capabilities as institutional builders.</p></div>
+    <div class="static-block"><div class="sblk-tag">Texas Pilot</div><h3>Starting in Austin & Houston</h3><p>We're launching in Texas first — two of the fastest-growing SFR markets in the country. Austin's HOME initiative has unlocked unprecedented density opportunities that REDai is uniquely positioned to surface.</p></div>
+    <div class="static-block"><div class="sblk-tag">Vision</div><h3>The AI-powered deal engine for residential development</h3><p>Our long-term vision is to become the operating system for small residential developers — from site selection to permitting to construction cost tracking — across every U.S. growth market.</p></div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div id="page-services" class="page">
+  <div class="static-page">
+    <div class="hero-tag">What We Offer</div>
+    <div class="static-title">Everything you need to find and underwrite deals.</div>
+    <p class="static-sub">REDai combines AI-powered site sourcing, zoning intelligence, and financial modeling into a single dashboard — replacing hours of manual work per deal.</p>
+    <div class="static-block" style="border-color:rgba(232,68,42,0.3);">
+      <div class="sblk-tag">Texas Pilot · $499/mo · $6,000/yr</div>
+      <h3>Full Access — Austin & Houston</h3>
+      <p>Unlimited deal analyses across both Texas pilot markets · Automated zoning intelligence · AI-generated pro formas · Opportunity ranking by projected ROI · REDai Copilot insights · Comparable sales data · Priority pilot support</p>
+    </div>
+    <div class="static-block" style="opacity:0.5;">
+      <div class="sblk-tag" style="background:rgba(136,136,136,0.12);color:var(--gray);">Coming Soon</div>
+      <h3>More markets. More features. More ways to win.</h3>
+      <p>National expansion, additional pricing tiers, and new product features are on the roadmap. Pilot customers get early access and locked-in pricing as we grow.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div id="page-faq" class="page">
+  <div class="static-page">
+    <div class="hero-tag">FAQ</div>
+    <div class="static-title">Common questions.</div>
+    <div class="static-block"><h3>What markets does REDai cover?</h3><p>We're currently in pilot mode across Austin and Houston, TX. National expansion begins Q1 2026 with Phoenix, Nashville, Charlotte, and Raleigh.</p></div>
+    <div class="static-block"><h3>Where does REDai get its data?</h3><p>We aggregate from public county records, MLS via licensed data providers (Attom, Estated), municipal GIS portals, RSMeans for construction costs, and proprietary sources.</p></div>
+    <div class="static-block"><h3>How accurate are the pro formas?</h3><p>Our pro formas use RSMeans construction cost data, local comparable sales, and current zoning rules. We target within 8–12% of actual cost. Always conduct independent due diligence before making an offer.</p></div>
+    <div class="static-block"><h3>Can I trust the zoning analysis?</h3><p>Our NLP engine reads municipal land development codes directly. For Austin, we're fully calibrated to the HOME Phase 1 & 2 amendments (Austin LDC §25-2-492). Confirm any zoning finding with the city before contracting.</p></div>
+    <div class="static-block"><h3>Do I need technical skills to use REDai?</h3><p>No. REDai is built for developers, not data scientists. Enter a zip code, get ranked results. No configuration required.</p></div>
+  </div>
+</div>
+
+<!-- HELP -->
+<div id="page-help" class="page">
+  <div class="static-page">
+    <div class="hero-tag">Help Center</div>
+    <div class="static-title">We're here to help.</div>
+    <div class="static-block"><div class="sblk-tag">Getting Started</div><h3>How to run your first scan</h3><p>Click "Launch Dashboard." Enter a Texas zip code (try 78702 for East Austin or 77006 for Houston Montrose) and hit Scan. Results appear ranked by ROI. Click any property for the full pro forma.</p></div>
+    <div class="static-block"><div class="sblk-tag">Saving Deals</div><h3>How to save and track opportunities</h3><p>Click "Save" on any property row in the results table, or "Save Deal" from the property detail page. Saved deals appear in the Saved Deals section of your dashboard sidebar.</p></div>
+    <div class="static-block"><div class="sblk-tag">Contact</div><h3>Reach the team</h3><p>Email us at founders@redai.app — we respond within 24 hours during the pilot phase.</p></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="page">
+  <div class="dash-layout">
+    <div class="dash-sidebar">
+      <div class="sidebar-market">
+        <div class="sidebar-market-label">Pilot markets</div>
+        <div class="sidebar-market-val">Texas</div>
+        <div class="sidebar-market-sub">Austin · Houston</div>
+      </div>
+      <div class="sidebar-section">Views</div>
+      <div class="sidebar-nav-item active" id="nav-opps" onclick="switchView('opportunities')"><div class="dot"></div> Opportunities</div>
+      <div class="sidebar-nav-item" id="nav-saved" onclick="switchView('saved')">
+        Saved Deals <span class="sidebar-badge" id="saved-badge" style="display:none">0</span>
+      </div>
+      <div class="sidebar-section">Markets</div>
+      <div class="sidebar-nav-item" style="font-size:12px;color:#4ADE80;gap:8px;">
+        <span style="width:6px;height:6px;border-radius:50%;background:#4ADE80;display:inline-block;flex-shrink:0;"></span> Austin, TX
+      </div>
+      <div class="sidebar-nav-item" style="font-size:12px;color:#4ADE80;gap:8px;">
+        <span style="width:6px;height:6px;border-radius:50%;background:#4ADE80;display:inline-block;flex-shrink:0;"></span> Houston, TX
+      </div>
+    </div>
+
+    <div class="dash-content">
+      <!-- OPPORTUNITIES -->
+      <div id="view-opportunities">
+        <div class="dash-header">
+          <div>
+            <div class="dash-title-main">Opportunity Scanner</div>
+            <div class="dash-title-sub" id="dash-sub">Enter a zip code to find ranked development opportunities</div>
+          </div>
+        </div>
+        <div class="scan-bar">
+          <span class="scan-label">Zip code</span>
+          <input class="scan-input" id="scan-input" placeholder="Enter zip code here" />
+          <select class="scan-filter">
+            <option>SFR — Vacant lots</option>
+            <option>SFR — Redevelopable</option>
+            <option>All SFR opportunities</option>
+          </select>
+          <button class="scan-btn" id="scan-btn" onclick="runScan()">Scan Market</button>
+        </div>
+        <div id="empty-state" class="empty-state">
+          <div class="empty-icon">◎</div>
+          <div class="empty-title">No results yet</div>
+          <div class="empty-sub">Enter a zip code above and hit Scan to surface ranked development opportunities in your target market. Try 78702 (East Austin) or 77006 (Houston).</div>
+        </div>
+        <div id="results-area" class="results-area">
+          <div class="metrics-grid">
+            <div class="metric-box"><div class="metric-box-label">Opportunities found</div><div class="metric-box-val" id="opp-count">—</div><div class="metric-box-sub" id="opp-market">—</div></div>
+            <div class="metric-box"><div class="metric-box-label">Avg projected ROI</div><div class="metric-box-val" id="avg-roi">—</div><div class="metric-box-sub" id="avg-roi-sub">—</div></div>
+            <div class="metric-box"><div class="metric-box-label">Avg land cost</div><div class="metric-box-val" id="avg-land">—</div><div class="metric-box-sub" id="avg-land-sub">—</div></div>
+            <div class="metric-box"><div class="metric-box-label">Build cost / sqft</div><div class="metric-box-val" id="build-cost">—</div><div class="metric-box-sub" id="build-sub">—</div></div>
+          </div>
+          <div class="copilot-bar">
+            <div class="copilot-icon">R</div>
+            <div><div class="copilot-label">REDai Copilot</div><div class="copilot-text" id="copilot-text">Analyzing...</div></div>
+          </div>
+          <div class="table-header">
+            <div class="table-title">Ranked opportunities</div>
+            <div class="table-meta" id="table-meta">—</div>
+          </div>
+          <table class="prop-table">
+            <thead><tr>
+              <th style="width:44px;">#</th><th>Property</th><th>Lot size</th><th>Zone</th>
+              <th>Land cost</th><th>ARV</th><th>ROI</th><th>Score</th><th>Status</th><th></th>
+            </tr></thead>
+            <tbody id="results-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SAVED DEALS -->
+      <div id="view-saved" style="display:none;">
+        <div class="dash-header">
+          <div><div class="dash-title-main">Saved Deals</div><div class="dash-title-sub">Your shortlisted opportunities</div></div>
+        </div>
+        <div id="saved-empty" class="saved-empty">
+          <div style="font-size:36px;opacity:0.2;margin-bottom:16px;">♡</div>
+          <div class="saved-empty-title">No saved deals yet</div>
+          <div class="saved-empty-sub">Run a scan and click Save on any property to track it here.</div>
+        </div>
+        <div id="saved-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div id="page-detail" class="page">
+  <div class="detail-content">
+    <button class="back-link" onclick="showDash('opportunities')">&#8592; Back to results</button>
+    <div class="detail-top">
+      <div>
+        <div class="detail-addr" id="det-addr">—</div>
+        <div class="detail-meta-row">
+          <span id="det-city">Austin, TX</span>
+          <span>· Zone: <span id="det-zone">—</span></span>
+          <span>· <span id="det-lot">—</span> sqft lot</span>
+          <span>· Vacant lot</span>
+        </div>
+      </div>
+      <div class="detail-actions">
+        <button class="act-btn act-save" id="det-save-btn" onclick="saveFromDetail()">Save Deal</button>
+        <button class="act-btn act-outline">Schedule site visit</button>
+        <button class="act-btn act-primary">Run Full Analysis</button>
+      </div>
+    </div>
+    <div class="detail-grid">
+      <div>
+        <div class="prop-visual" id="det-map-container">
+          <div class="prop-photo-placeholder">
+            <span>🗺</span>
+            <p>Map loads when you open a property</p>
+          </div>
+        </div>
+
+        <div class="det-card">
+          <div class="det-card-title">AI-Generated Pro Forma</div>
+          <div class="pf-section">Acquisition</div>
+          <div class="pf-row"><span class="pf-label">Land purchase price</span><span class="pf-val neg" id="det-land">—</span></div>
+          <div class="pf-row"><span class="pf-label">Closing costs (2.5%)</span><span class="pf-val neg" id="det-closing">—</span></div>
+          <div class="pf-row"><span class="pf-label">Financing / carry (8 months)</span><span class="pf-val neg" id="det-carry">—</span></div>
+          <div class="pf-section">Construction</div>
+          <div class="pf-row"><span class="pf-label">Hard costs</span><span class="pf-val neg" id="det-hard">—</span></div>
+          <div class="pf-row"><span class="pf-label">Soft costs / permits</span><span class="pf-val neg" id="det-soft">—</span></div>
+          <div class="pf-row"><span class="pf-label">Contingency (5%)</span><span class="pf-val neg" id="det-contingency">—</span></div>
+          <div class="pf-section">Revenue</div>
+          <div class="pf-row"><span class="pf-label">After-repair value (ARV)</span><span class="pf-val pos" id="det-arv">—</span></div>
+          <div class="pf-row"><span class="pf-label">Selling costs (5%)</span><span class="pf-val neg" id="det-selling">—</span></div>
+          <div class="pf-total"><span class="pf-total-label">Net profit</span><span class="pf-total-val" id="det-profit">—</span></div>
+          <div class="pf-total" style="margin-top:10px;">
+            <span style="font-size:14px;color:var(--gray);">Return on cost</span>
+            <span style="font-family:var(--font-display);font-size:28px;color:var(--red-light);" id="det-roi-inline">—</span>
+          </div>
+          <div class="ai-insight-box">
+            <div class="ai-insight-lbl">REDai Copilot</div>
+            <div class="ai-insight-txt" id="det-copilot">SF-3 zoning under Austin's HOME Phase 1 now permits up to 3 units by right. Building a triplex could push projected returns to <strong>28–32%</strong> based on East Austin rental demand ($2,400–$2,800/mo per unit). No variance required — Austin LDC §25-2-492.</div>
+          </div>
+        </div>
+        <div class="det-card">
+          <div class="det-card-title" id="det-zone-title">Zoning Analysis · Austin LDC §25-2-492</div>
+          <div class="zone-grid" id="det-zone-grid"></div>
+          <div class="ai-insight-box" style="margin-top:16px;">
+            <div class="ai-insight-lbl">Zoning Summary</div>
+            <div class="ai-insight-txt" id="det-zone-summary">All SF-3 minimum lot requirements met. Under HOME Phase 1 (Ord. 20231207-001), up to 3 units permitted by right. Buildable footprint after setbacks: ~2,800 sqft. Permit timeline: 8–14 weeks per Austin DSD.</div>
+          </div>
+        </div>
+        <div class="det-card">
+          <div class="det-card-title" id="det-comp-title">Comparable Sales · 0.25mi radius · 180 days</div>
+          <table class="comp-tbl"><thead><tr><th>Address</th><th>Sqft</th><th>Sale price</th><th>$/sqft</th><th>Sold</th></tr></thead>
+          <tbody id="det-comp-tbody"></tbody></table>
+          <div style="font-size:12px;color:var(--gray);margin-top:12px;" id="det-comp-note">—</div>
+        </div>
+      </div>
+      <div>
+        <div class="roi-card"><div class="roi-card-label">Projected ROI</div><div class="roi-card-num" id="det-roi-big">—</div><div class="roi-card-sub">Return on total cost</div></div>
+        <div class="score-det-card">
+          <div class="det-card-title" style="margin-bottom:12px;">Opportunity score: <span id="det-score">—</span>/100</div>
+          <div class="sdr"><span class="sdr-cat">Financial returns</span><span class="pill pill-high">High</span></div>
+          <div class="sdr"><span class="sdr-cat">Zoning feasibility</span><span class="pill pill-high">High</span></div>
+          <div class="sdr"><span class="sdr-cat">Market demand</span><span class="pill pill-high">High</span></div>
+          <div class="sdr"><span class="sdr-cat">Comp quality</span><span class="pill pill-high">High</span></div>
+          <div class="sdr"><span class="sdr-cat">Permit risk</span><span class="pill pill-med">Medium</span></div>
+          <div class="sdr"><span class="sdr-cat">Title complexity</span><span class="pill pill-high">Low risk</span></div>
+        </div>
+        <div class="prop-det-card">
+          <div class="det-card-title" style="margin-bottom:14px;">Property details</div>
+          <div class="pf-row"><span class="pf-label">APN</span><span class="pf-val" id="det-apn">—</span></div>
+          <div class="pf-row"><span class="pf-label">Owner</span><span class="pf-val" id="det-owner">—</span></div>
+          <div class="pf-row"><span class="pf-label">Last sale</span><span class="pf-val" id="det-lastsale">—</span></div>
+          <div class="pf-row"><span class="pf-label">Days on market</span><span class="pf-val" id="det-dom">—</span></div>
+          <div class="pf-row"><span class="pf-label">List price</span><span class="pf-val" id="det-list">—</span></div>
+          <div class="pf-row"><span class="pf-label">Utilities</span><span class="pf-val" id="det-utilities">Water, sewer, gas on-site</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const MARKETS = {
+  '78702': {
+    city:'Austin, TX', label:'East Austin · 78702', count:14,
+    avgRoi:'18.7%', roiSub:'vs 13.4% Austin avg', avgLand:'$312K', landSub:'per parcel · 78702',
+    buildCost:'$198/sqft', buildSub:'RSMeans 2025 · Austin, TX',
+    copilot:'<strong>3105 E Cesar Chavez St</strong> is your top opportunity. SF-3 zoning under Austin\'s HOME Phase 1 permits up to 3 units by right — building a triplex could push ROI from <strong>20.2% to 28–32%</strong> based on East Austin rental comps. Austin LDC §25-2-492 — no variance required.',
+    comps:[['2901 E Cesar Chavez St','1,980','$782,000','$395','Feb 2025'],['2408 Lyons Rd','2,100','$810,000','$386','Dec 2024'],['1104 Willow St','1,850','$748,000','$404','Nov 2024'],['3002 E 4th St','2,050','$795,000','$388','Oct 2024']],
+    compNote:'Avg $/sqft: $393 · REDai ARV estimate: $393/sqft × 2,025 sqft · Austin Board of Realtors MLS',
+    zoneGrid:[['Zone','SF-3 (Family Residence)'],['Max units','Up to 3 (HOME Phase 1)'],['Max height','35 ft'],['Lot coverage','45% (55% w/ 2+ units)'],['Front setback','25 ft'],['Rear setback','10 ft'],['Side setbacks','5 ft each side'],['Min. lot size','5,750 sqft ✓']],
+    zoneSummary:'All SF-3 minimum lot requirements met. Under Austin HOME Phase 1 (Ord. 20231207-001), up to 3 units permitted by right. Buildable footprint after setbacks: ~2,800 sqft. Permit timeline: 8–14 weeks per Austin DSD historical data.',
+    detCopilot:'SF-3 zoning under Austin\'s HOME Phase 1 now permits up to 3 units by right. Building a triplex could push projected returns to <strong>28–32%</strong> based on East Austin rental demand ($2,400–$2,800/mo per unit). No variance required — Austin LDC §25-2-492.',
+    properties:[
+      {addr:'3105 E Cesar Chavez St',zip:'78702',roi:'20.2',lot:'6,508',zone:'SF-3',land:'325000',arv:'795000',score:'82',status:'vacant',dom:'31 days',apn:'02-2106-0201-00300',owner:'Travis Co. — Private Owner',lastsale:'2019 · $185,000'},
+      {addr:'2516 Lyons Rd',zip:'78702',roi:'17.8',lot:'6,324',zone:'SF-3',land:'298000',arv:'720000',score:'76',status:'vacant',dom:'22 days',apn:'02-2101-0811-00100',owner:'Travis Co. — Private Owner',lastsale:'2021 · $210,000'},
+      {addr:'900 Willow St',zip:'78702',roi:'15.3',lot:'6,508',zone:'SF-3',land:'310000',arv:'698000',score:'71',status:'redevelop',dom:'45 days',apn:'02-2106-0108-00200',owner:'Travis Co. — Private Owner',lastsale:'2018 · $165,000'},
+      {addr:'1212 Taylor St',zip:'78702',roi:'13.9',lot:'9,178',zone:'SF-3-NP',land:'385000',arv:'755000',score:'68',status:'review',dom:'58 days',apn:'02-2105-0312-00500',owner:'Travis Co. — Private Owner',lastsale:'2020 · $220,000'},
+      {addr:'3105 Ray Wood Dr',zip:'78704',roi:'12.4',lot:'7,840',zone:'SF-3',land:'342000',arv:'710000',score:'62',status:'vacant',dom:'19 days',apn:'02-2204-0401-00100',owner:'Travis Co. — Private Owner',lastsale:'2022 · $275,000'},
+    ]
+  },
+  '78704': {
+    city:'Austin, TX', label:'South Congress · 78704', count:9,
+    avgRoi:'17.1%', roiSub:'vs 13.4% Austin avg', avgLand:'$348K', landSub:'per parcel · 78704',
+    buildCost:'$198/sqft', buildSub:'RSMeans 2025 · Austin, TX',
+    copilot:'<strong>3105 Ray Wood Dr</strong> leads this submarket with a 20.1% ROI — surrounded by active redevelopment in South Austin\'s 78704 corridor. SF-3 zoning permits up to 3 units under HOME Phase 1.',
+    comps:[['2901 S 1st St','1,950','$762,000','$391','Jan 2025'],['1508 Bluebonnet Ln','2,050','$798,000','$389','Nov 2024'],['2102 S Lamar Blvd','1,880','$742,000','$395','Oct 2024'],['3301 Manchaca Rd','2,100','$815,000','$388','Sep 2024']],
+    compNote:'Avg $/sqft: $391 · REDai ARV estimate: $391/sqft × 2,025 sqft · Austin Board of Realtors MLS',
+    zoneGrid:[['Zone','SF-3 (Family Residence)'],['Max units','Up to 3 (HOME Phase 1)'],['Max height','35 ft'],['Lot coverage','45% (55% w/ 2+ units)'],['Front setback','25 ft'],['Rear setback','10 ft'],['Side setbacks','5 ft each side'],['Min. lot size','5,750 sqft ✓']],
+    zoneSummary:'All SF-3 minimum lot requirements met. Under Austin HOME Phase 1 (Ord. 20231207-001), up to 3 units permitted by right. Buildable footprint after setbacks: ~2,800 sqft. Permit timeline: 8–14 weeks per Austin DSD.',
+    detCopilot:'South Austin\'s 78704 has seen 9.2% YoY price appreciation with strong demand for new SFR construction. SF-3 zoning permits up to 3 units under HOME Phase 1 — significant value-add opportunity on this parcel.',
+    properties:[
+      {addr:'3105 Ray Wood Dr',zip:'78704',roi:'20.1',lot:'7,840',zone:'SF-3',land:'342000',arv:'790000',score:'78',status:'vacant',dom:'19 days',apn:'02-2204-0401-00100',owner:'Travis Co. — Private Owner',lastsale:'2022 · $275,000'},
+      {addr:'2201 S 1st St',zip:'78704',roi:'16.8',lot:'6,200',zone:'SF-3',land:'318000',arv:'725000',score:'73',status:'redevelop',dom:'33 days',apn:'02-2204-0215-00300',owner:'Travis Co. — Private Owner',lastsale:'2020 · $198,000'},
+      {addr:'1508 Bluebonnet Ln',zip:'78704',roi:'14.2',lot:'6,800',zone:'SF-3',land:'355000',arv:'742000',score:'67',status:'vacant',dom:'27 days',apn:'02-2202-0318-00100',owner:'Travis Co. — Private Owner',lastsale:'2021 · $235,000'},
+    ]
+  },
+  '77006': {
+    city:'Houston, TX', label:'Montrose · 77006', count:11,
+    avgRoi:'16.2%', roiSub:'vs 11.8% Houston avg', avgLand:'$218K', landSub:'per parcel · 77006',
+    buildCost:'$175/sqft', buildSub:'RSMeans 2025 · Houston, TX',
+    copilot:'<strong>515 W Alabama St</strong> leads Montrose with an 18.9% ROI on a 6,250 sqft RS-zoned lot. Montrose is one of Houston\'s fastest-appreciating inner-loop neighborhoods with strong demand for new construction.',
+    comps:[['412 W Alabama St','1,850','$622,000','$336','Feb 2025'],['2204 Milam St','1,920','$648,000','$338','Dec 2024'],['1018 W Gray St','1,780','$601,000','$338','Nov 2024'],['2808 Huldy St','2,000','$672,000','$336','Oct 2024']],
+    compNote:'Avg $/sqft: $337 · REDai ARV estimate: $337/sqft × 1,900 sqft · HAR Houston MLS',
+    zoneGrid:[['Zone','RS (Single-Family)'],['Max units','1 unit'],['Max height','35 ft'],['Lot coverage','No city max'],['Front setback','25 ft'],['Rear setback','10 ft'],['Side setbacks','5 ft each side'],['Min. lot size','5,000 sqft ✓']],
+    zoneSummary:'Houston has no citywide zoning code — development governed by deed restrictions. This parcel\'s deed restrictions permit single-family residential development. No variance required. Permit timeline: 6–10 weeks per Houston permitting historical data.',
+    detCopilot:'Houston has no traditional zoning — development is governed by deed restrictions. This parcel\'s deed restrictions permit SFR development with no setback surprises. Strong inner-loop location with consistent demand and 8.1% YoY price appreciation in 77006.',
+    properties:[
+      {addr:'515 W Alabama St',zip:'77006',roi:'18.9',lot:'6,250',zone:'RS',land:'215000',arv:'645000',score:'79',status:'vacant',dom:'28 days',apn:'0660290010023',owner:'Harris Co. — Private Owner',lastsale:'2018 · $142,000'},
+      {addr:'2318 Milam St',zip:'77006',roi:'16.4',lot:'5,800',zone:'RS',land:'198000',arv:'595000',score:'72',status:'redevelop',dom:'41 days',apn:'0660280020011',owner:'Harris Co. — Private Owner',lastsale:'2020 · $155,000'},
+      {addr:'1104 W Gray St',zip:'77019',roi:'14.8',lot:'6,600',zone:'RS',land:'232000',arv:'618000',score:'69',status:'vacant',dom:'15 days',apn:'0660320040008',owner:'Harris Co. — Private Owner',lastsale:'2019 · $168,000'},
+      {addr:'3202 Hadley St',zip:'77004',roi:'13.1',lot:'5,500',zone:'RS',land:'185000',arv:'540000',score:'64',status:'vacant',dom:'37 days',apn:'0661140010015',owner:'Harris Co. — Private Owner',lastsale:'2021 · $145,000'},
+      {addr:'2704 Elgin St',zip:'77006',roi:'11.7',lot:'6,100',zone:'RS',land:'208000',arv:'568000',score:'59',status:'review',dom:'52 days',apn:'0660290030022',owner:'Harris Co. — Private Owner',lastsale:'2017 · $128,000'},
+    ]
+  },
+  '77019': {
+    city:'Houston, TX', label:'River Oaks Area · 77019', count:8,
+    avgRoi:'14.9%', roiSub:'vs 11.8% Houston avg', avgLand:'$285K', landSub:'per parcel · 77019',
+    buildCost:'$175/sqft', buildSub:'RSMeans 2025 · Houston, TX',
+    copilot:'<strong>1104 W Gray St</strong> leads River Oaks area with a 14.8% ROI on an RS-zoned lot. This submarket has appreciated 9.2% YoY with strong demand for new construction near River Oaks.',
+    comps:[['1018 W Gray St','1,780','$601,000','$338','Nov 2024'],['2901 Kirby Dr','1,950','$648,000','$332','Oct 2024'],['3302 Inwood Dr','1,820','$612,000','$336','Sep 2024'],['2104 W Alabama St','1,900','$638,000','$336','Aug 2024']],
+    compNote:'Avg $/sqft: $335 · REDai ARV estimate: $335/sqft × 1,900 sqft · HAR Houston MLS',
+    zoneGrid:[['Zone','RS (Single-Family)'],['Max units','1 unit'],['Max height','35 ft'],['Lot coverage','No city max'],['Front setback','25 ft'],['Rear setback','10 ft'],['Side setbacks','5 ft each side'],['Min. lot size','5,000 sqft ✓']],
+    zoneSummary:'Houston has no citywide zoning code. Development governed by deed restrictions. Parcel deed restrictions permit single-family residential. No variance required. Permit timeline: 6–10 weeks per Houston permitting data.',
+    detCopilot:'River Oaks area commands a premium for new construction. Buyers in 77019 skew toward high-income households with strong preference for new builds. This parcel\'s location within 0.5mi of River Oaks supports strong ARV assumptions.',
+    properties:[
+      {addr:'1104 W Gray St',zip:'77019',roi:'14.8',lot:'6,600',zone:'RS',land:'232000',arv:'618000',score:'69',status:'vacant',dom:'15 days',apn:'0660320040008',owner:'Harris Co. — Private Owner',lastsale:'2019 · $168,000'},
+      {addr:'2901 Kirby Dr',zip:'77019',roi:'13.4',lot:'7,200',zone:'RS',land:'298000',arv:'672000',score:'65',status:'redevelop',dom:'34 days',apn:'0660340010004',owner:'Harris Co. — Private Owner',lastsale:'2020 · $210,000'},
+      {addr:'3410 Inwood Dr',zip:'77019',roi:'11.9',lot:'5,900',zone:'RS',land:'255000',arv:'580000',score:'61',status:'vacant',dom:'48 days',apn:'0660350020017',owner:'Harris Co. — Private Owner',lastsale:'2018 · $175,000'},
+    ]
+  }
+};
+
+let savedDeals = [], currentDetailData = null, currentMarket = null;
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+}
+function showDash(view) { showPage('dashboard'); switchView(view); setActiveLink('dashboard'); }
+function setActiveLink(el) {
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  if (typeof el === 'string') {
+    document.querySelectorAll('.nav-link').forEach(l => { if (l.textContent.toLowerCase().includes(el.toLowerCase())) l.classList.add('active'); });
+  } else { el.classList.add('active'); }
+}
+function switchView(view) {
+  document.getElementById('view-opportunities').style.display = view === 'opportunities' ? 'block' : 'none';
+  document.getElementById('view-saved').style.display = view === 'saved' ? 'block' : 'none';
+  document.getElementById('nav-opps').classList.toggle('active', view === 'opportunities');
+  document.getElementById('nav-saved').classList.toggle('active', view === 'saved');
+  if (view === 'saved') renderSaved();
+}
+function runScan() {
+  const zip = document.getElementById('scan-input').value.replace(/\D/g,'').trim();
+  const btn = document.getElementById('scan-btn');
+  if (!zip) { document.getElementById('scan-input').style.borderColor='var(--red)'; setTimeout(()=>document.getElementById('scan-input').style.borderColor='#333',1500); return; }
+  btn.textContent = 'Scanning...'; btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = 'Scan Market'; btn.disabled = false;
+    const market = MARKETS[zip];
+    if (!market) {
+      document.getElementById('empty-state').style.display = 'flex';
+      document.getElementById('empty-state').querySelector('.empty-title').textContent = 'No data for this zip code yet';
+      document.getElementById('empty-state').querySelector('.empty-sub').textContent = 'REDai currently covers Austin (78702, 78704) and Houston (77006, 77019) in our Texas pilot. Try one of those zip codes.';
+      document.getElementById('results-area').classList.remove('visible');
+      return;
+    }
+    currentMarket = market;
+    document.getElementById('empty-state').style.display = 'none';
+    document.getElementById('results-area').classList.add('visible','fade-in');
+    document.getElementById('dash-sub').textContent = market.label + ' · Showing top results by projected ROI';
+    document.getElementById('opp-count').textContent = market.count;
+    document.getElementById('opp-market').textContent = 'in ' + zip + ' · ' + market.city.split(',')[0];
+    document.getElementById('avg-roi').textContent = market.avgRoi;
+    document.getElementById('avg-roi-sub').textContent = market.roiSub;
+    document.getElementById('avg-land').textContent = market.avgLand;
+    document.getElementById('avg-land-sub').textContent = market.landSub;
+    document.getElementById('build-cost').textContent = market.buildCost;
+    document.getElementById('build-sub').textContent = market.buildSub;
+    document.getElementById('copilot-text').innerHTML = market.copilot;
+    document.getElementById('table-meta').textContent = 'Sorted by projected ROI · ' + market.properties.length + ' results · analyzed in 1.4s';
+    renderTable(market.properties);
+  }, 1400);
+}
+function renderTable(props) {
+  const tbody = document.getElementById('results-tbody');
+  tbody.innerHTML = '';
+  props.forEach((p, i) => {
+    const isSaved = savedDeals.some(s => s.addr === p.addr);
+    const rc = i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other';
+    const sc = p.status==='vacant'?'st-vacant':p.status==='redevelop'?'st-redevelop':'st-review';
+    const sl = p.status==='vacant'?'Vacant lot':p.status==='redevelop'?'Redevelopable':'Under review';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><div class="rank-num ${rc}">${i+1}</div></td>
+      <td><div class="prop-addr">${p.addr}</div><div class="prop-zip">${currentMarket.city.split(',')[0]}, TX ${p.zip}</div></td>
+      <td>${p.lot} sqft</td><td>${p.zone}</td>
+      <td>$${parseInt(p.land).toLocaleString()}</td>
+      <td>$${parseInt(p.arv).toLocaleString()}</td>
+      <td><span class="roi-val">${p.roi}%</span></td>
+      <td><div class="score-wrap"><div class="score-track"><div class="score-fill" style="width:${p.score}%"></div></div><span class="score-val">${p.score}</span></div></td>
+      <td><span class="status-tag ${sc}">${sl}</span></td>
+      <td><button class="save-btn ${isSaved?'saved':''}" id="sb-${i}" onclick="event.stopPropagation();toggleSave(${i})">${isSaved?'Saved ✓':'Save'}</button></td>
+    `;
+    tr.onclick = () => showDetail(p);
+    tbody.appendChild(tr);
+  });
+}
+function toggleSave(idx) {
+  const p = currentMarket.properties[idx];
+  const ex = savedDeals.findIndex(s => s.addr === p.addr);
+  const btn = document.getElementById('sb-'+idx);
+  if (ex >= 0) { savedDeals.splice(ex,1); btn.textContent='Save'; btn.classList.remove('saved'); }
+  else { savedDeals.push({...p, market:currentMarket.city}); btn.textContent='Saved ✓'; btn.classList.add('saved'); }
+  updateBadge();
+}
+function updateBadge() {
+  const b = document.getElementById('saved-badge');
+  b.style.display = savedDeals.length > 0 ? 'inline-block' : 'none';
+  b.textContent = savedDeals.length;
+}
+function renderSaved() {
+  const list = document.getElementById('saved-list');
+  const empty = document.getElementById('saved-empty');
+  list.innerHTML = '';
+  if (!savedDeals.length) { empty.style.display='block'; return; }
+  empty.style.display = 'none';
+  savedDeals.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'saved-card fade-in';
+    div.innerHTML = `
+      <div class="saved-card-info" onclick="showDetailFromSaved(${i})">
+        <div class="saved-card-addr">${p.addr}</div>
+        <div class="saved-card-meta">${p.market} · ${p.zone} · ${p.lot} sqft · Land: $${parseInt(p.land).toLocaleString()}</div>
+      </div>
+      <div class="saved-card-roi">${p.roi}%</div>
+      <button class="saved-card-remove" onclick="removeSaved(${i})" title="Remove">×</button>
+    `;
+    list.appendChild(div);
+  });
+}
+function removeSaved(i) { savedDeals.splice(i,1); updateBadge(); renderSaved(); }
+function showDetailFromSaved(i) {
+  const p = savedDeals[i];
+  const marketKey = Object.keys(MARKETS).find(k => MARKETS[k].city === p.market) || '78702';
+  currentMarket = MARKETS[marketKey];
+  showDetail(p);
+}
+function saveFromDetail() {
+  if (!currentDetailData) return;
+  const ex = savedDeals.findIndex(s => s.addr === currentDetailData.addr);
+  const btn = document.getElementById('det-save-btn');
+  if (ex >= 0) { savedDeals.splice(ex,1); btn.textContent='Save Deal'; }
+  else { savedDeals.push({...currentDetailData, market: currentMarket ? currentMarket.city : 'Austin, TX'}); btn.textContent='Saved ✓'; }
+  updateBadge();
+}
+function showDetail(p) {
+  currentDetailData = p;
+  const m = currentMarket;
+  const land = parseInt(p.land), arv = parseInt(p.arv);
+  const roiDecimal = parseFloat(p.roi) / 100;
+  // Back-calculate totalCost from ARV and ROI so profit is always consistent
+  // ROI = profit / totalCost, profit = arv * 0.95 - totalCost
+  // => totalCost = (arv * 0.95) / (1 + roiDecimal)
+  const selling = Math.round(arv * 0.05);
+  const totalCost = Math.round((arv - selling) / (1 + roiDecimal));
+  const profit = arv - selling - totalCost;
+  // Split totalCost into line items that sum to totalCost
+  const closing = Math.round(land * 0.025);
+  const carry = Math.round(land * 0.06);
+  const remainder = totalCost - land - closing - carry;
+  const hard = Math.round(remainder * 0.82);
+  const soft = Math.round(remainder * 0.12);
+  const contingency = remainder - hard - soft;
+
+  document.getElementById('det-addr').textContent = p.addr;
+  document.getElementById('det-city').textContent = m.city;
+  document.getElementById('det-zone').textContent = p.zone;
+  document.getElementById('det-lot').textContent = p.lot;
+  document.getElementById('det-roi-big').textContent = p.roi + '%';
+  document.getElementById('det-roi-inline').textContent = p.roi + '%';
+  document.getElementById('det-score').textContent = p.score;
+  document.getElementById('det-land').textContent = '$' + land.toLocaleString();
+  document.getElementById('det-closing').textContent = '$' + closing.toLocaleString();
+  document.getElementById('det-carry').textContent = '$' + carry.toLocaleString();
+  document.getElementById('det-hard').textContent = '$' + hard.toLocaleString();
+  document.getElementById('det-soft').textContent = '$' + soft.toLocaleString();
+  document.getElementById('det-contingency').textContent = '$' + contingency.toLocaleString();
+  document.getElementById('det-arv').textContent = '$' + arv.toLocaleString();
+  document.getElementById('det-selling').textContent = '$' + selling.toLocaleString();
+  document.getElementById('det-profit').textContent = '$' + Math.max(profit, 0).toLocaleString();
+  document.getElementById('det-apn').textContent = p.apn || '—';
+  document.getElementById('det-owner').textContent = p.owner || '—';
+  document.getElementById('det-lastsale').textContent = p.lastsale || '—';
+  document.getElementById('det-dom').textContent = p.dom || '—';
+  document.getElementById('det-list').textContent = '$' + (land + 9000).toLocaleString();
+  document.getElementById('det-copilot').innerHTML = m.detCopilot;
+  document.getElementById('det-zone-summary').textContent = m.zoneSummary;
+
+  const zg = document.getElementById('det-zone-grid');
+  zg.innerHTML = m.zoneGrid.map(([k,v]) => `<div class="zone-item"><div class="zk">${k}</div><div class="zv">${v}</div></div>`).join('');
+
+  const ctbody = document.getElementById('det-comp-tbody');
+  ctbody.innerHTML = m.comps.map(c => `<tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td>${c[3]}</td><td>${c[4]}</td></tr>`).join('');
+  document.getElementById('det-comp-note').textContent = m.compNote;
+
+  // Map embed
+  const mapContainer = document.getElementById('det-map-container');
+  const city = m ? m.city : 'Austin, TX';
+  const encodedAddr = encodeURIComponent(p.addr + ', ' + city);
+  const isTX78 = p.zip && p.zip.startsWith('78');
+  const lat = isTX78 ? '30.2672' : '29.7604';
+  const lon = isTX78 ? '-97.7431' : '-95.3698';
+  const bbox = isTX78 ? '-97.82,30.22,-97.67,30.32' : '-95.44,29.71,-95.29,29.81';
+  mapContainer.innerHTML = '<iframe class="prop-map-frame" src="https://www.openstreetmap.org/export/embed.html?bbox=' + bbox + '&layer=mapnik&marker=' + lat + ',' + lon + '" loading="lazy" title="Property location"></iframe>'
+    + '<div style="padding:10px 14px;background:var(--dark2);border-top:1px solid #1E1E1E;font-size:11px;color:var(--gray);display:flex;justify-content:space-between;align-items:center;">'
+    + '<span>\u{1F4CD} ' + p.addr + ' · ' + city + '</span>'
+    + '<a href="https://www.google.com/maps/search/' + encodedAddr + '" target="_blank" style="color:var(--red-light);text-decoration:none;font-weight:600;">Open in Google Maps ↗</a>'
+    + '</div>';
+
+  const isSaved = savedDeals.some(s => s.addr === p.addr);
+  document.getElementById('det-save-btn').textContent = isSaved ? 'Saved ✓' : 'Save Deal';
+
+  showPage('detail');
+}
+
+document.getElementById('scan-input').addEventListener('keydown', e => { if (e.key === 'Enter') runScan(); });
+</script>
+</body>
+</html>
