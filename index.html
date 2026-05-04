@@ -51,6 +51,10 @@ nav {
 .stat-item { background: var(--dark2); padding: 24px 28px; }
 .stat-num { font-family: var(--font-display); font-size: 36px; color: var(--white); margin-bottom: 4px; }
 .stat-label { font-size: 13px; color: var(--gray); font-weight: 400; }
+.scroll-arrow { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 8px; cursor: pointer; width: fit-content; }
+.scroll-arrow-label { font-size: 13px; color: var(--gray); font-weight: 400; letter-spacing: 0.02em; }
+.scroll-arrow-icon { font-size: 28px; color: var(--red); line-height: 1; animation: bounce 2s infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
 .how-section { max-width: 1200px; margin: 0 auto; padding: 48px 48px 80px; border-top: 1px solid #1E1E1E; }
 .section-eyebrow { font-size: 11px; font-weight: 600; color: var(--red); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
 .section-title { font-family: var(--font-display); font-size: 36px; color: var(--white); margin-bottom: 40px; }
@@ -202,6 +206,13 @@ nav {
 .prop-det-card { background: var(--dark2); border: 1px solid #1E1E1E; border-radius: 10px; padding: 20px; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .fade-in { animation: fadeIn 0.3s ease forwards; }
+
+/* PROPERTY PHOTO / MAP */
+.prop-visual { border-radius: 10px; overflow: hidden; margin-bottom: 16px; border: 1px solid #1E1E1E; background: var(--dark2); }
+.prop-map-frame { width: 100%; height: 260px; border: none; display: block; }
+.prop-photo-placeholder { width: 100%; height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--dark3); gap: 8px; }
+.prop-photo-placeholder span { font-size: 32px; opacity: 0.3; }
+.prop-photo-placeholder p { font-size: 12px; color: var(--gray2); }
 </style>
 </head>
 <body>
@@ -233,10 +244,9 @@ nav {
       <button class="cta-primary" onclick="showDash('opportunities')">Launch Dashboard</button>
       <button class="cta-ghost" onclick="showPage('services')">See Our Services</button>
     </div>
-    <div class="hero-stats">
-      <div class="stat-item"><div class="stat-num">10×</div><div class="stat-label">More deals evaluated per month vs. manual research</div></div>
-      <div class="stat-item"><div class="stat-num">120K+</div><div class="stat-label">Small SFR builders in the U.S. with no data team</div></div>
-      <div class="stat-item"><div class="stat-num">$867M</div><div class="stat-label">Total addressable market for REDai</div></div>
+    <div class="scroll-arrow" onclick="document.querySelector('.how-section').scrollIntoView({behavior:'smooth'})">
+      <div class="scroll-arrow-label">See how it works</div>
+      <div class="scroll-arrow-icon">↓</div>
     </div>
   </div>
   <div class="how-section">
@@ -268,9 +278,16 @@ nav {
     <div class="hero-tag">What We Offer</div>
     <div class="static-title">Everything you need to find and underwrite deals.</div>
     <p class="static-sub">REDai combines AI-powered site sourcing, zoning intelligence, and financial modeling into a single dashboard — replacing hours of manual work per deal.</p>
-    <div class="static-block"><div class="sblk-tag">Starter · $499/mo</div><h3>Market Scanner</h3><p>Scan 1 market · 30 analyses/month · Automated zoning summary · Basic pro forma · Opportunity ranking by ROI</p></div>
-    <div class="static-block"><div class="sblk-tag">Pro · $699/mo</div><h3>Full Underwriting Suite</h3><p>3 markets · 75 analyses/month · Everything in Starter · Comparable sales data · Market trend reports · REDai Copilot AI insights</p></div>
-    <div class="static-block"><div class="sblk-tag">Enterprise · $999/mo</div><h3>Unlimited + API Access</h3><p>Unlimited markets · Unlimited analyses · Full API access · Priority support · Custom reporting · Team seats</p></div>
+    <div class="static-block" style="border-color:rgba(232,68,42,0.3);">
+      <div class="sblk-tag">Texas Pilot · $499/mo · $6,000/yr</div>
+      <h3>Full Access — Austin & Houston</h3>
+      <p>Unlimited deal analyses across both Texas pilot markets · Automated zoning intelligence · AI-generated pro formas · Opportunity ranking by projected ROI · REDai Copilot insights · Comparable sales data · Priority pilot support</p>
+    </div>
+    <div class="static-block" style="opacity:0.5;">
+      <div class="sblk-tag" style="background:rgba(136,136,136,0.12);color:var(--gray);">Coming Soon</div>
+      <h3>More markets. More features. More ways to win.</h3>
+      <p>National expansion, additional pricing tiers, and new product features are on the roadmap. Pilot customers get early access and locked-in pricing as we grow.</p>
+    </div>
   </div>
 </div>
 
@@ -332,7 +349,7 @@ nav {
         </div>
         <div class="scan-bar">
           <span class="scan-label">Zip code</span>
-          <input class="scan-input" id="scan-input" placeholder="Enter Texas zip (e.g. 78702, 77006)" />
+          <input class="scan-input" id="scan-input" placeholder="Enter zip code here" />
           <select class="scan-filter">
             <option>SFR — Vacant lots</option>
             <option>SFR — Redevelopable</option>
@@ -408,6 +425,13 @@ nav {
     </div>
     <div class="detail-grid">
       <div>
+        <div class="prop-visual" id="det-map-container">
+          <div class="prop-photo-placeholder">
+            <span>🗺</span>
+            <p>Map loads when you open a property</p>
+          </div>
+        </div>
+
         <div class="det-card">
           <div class="det-card-title">AI-Generated Pro Forma</div>
           <div class="pf-section">Acquisition</div>
@@ -717,6 +741,20 @@ function showDetail(p) {
   const ctbody = document.getElementById('det-comp-tbody');
   ctbody.innerHTML = m.comps.map(c => `<tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td>${c[3]}</td><td>${c[4]}</td></tr>`).join('');
   document.getElementById('det-comp-note').textContent = m.compNote;
+
+  // Map embed
+  const mapContainer = document.getElementById('det-map-container');
+  const city = m ? m.city : 'Austin, TX';
+  const encodedAddr = encodeURIComponent(p.addr + ', ' + city);
+  const isTX78 = p.zip && p.zip.startsWith('78');
+  const lat = isTX78 ? '30.2672' : '29.7604';
+  const lon = isTX78 ? '-97.7431' : '-95.3698';
+  const bbox = isTX78 ? '-97.82,30.22,-97.67,30.32' : '-95.44,29.71,-95.29,29.81';
+  mapContainer.innerHTML = '<iframe class="prop-map-frame" src="https://www.openstreetmap.org/export/embed.html?bbox=' + bbox + '&layer=mapnik&marker=' + lat + ',' + lon + '" loading="lazy" title="Property location"></iframe>'
+    + '<div style="padding:10px 14px;background:var(--dark2);border-top:1px solid #1E1E1E;font-size:11px;color:var(--gray);display:flex;justify-content:space-between;align-items:center;">'
+    + '<span>\u{1F4CD} ' + p.addr + ' · ' + city + '</span>'
+    + '<a href="https://www.google.com/maps/search/' + encodedAddr + '" target="_blank" style="color:var(--red-light);text-decoration:none;font-weight:600;">Open in Google Maps ↗</a>'
+    + '</div>';
 
   const isSaved = savedDeals.some(s => s.addr === p.addr);
   document.getElementById('det-save-btn').textContent = isSaved ? 'Saved ✓' : 'Save Deal';
